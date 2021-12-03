@@ -11,7 +11,7 @@
 }
 
 .center {
-  @apply grid grid-cols-1 gap-2 p-4 overflow-scroll;
+  @apply grid grid-cols-1 gap-2 p-4 overflow-y-scroll;
   @apply text-center;
 }
 
@@ -21,4 +21,9 @@
 
 .listingButton {
   @apply text-blue-700;
+}
+
+::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
 }
