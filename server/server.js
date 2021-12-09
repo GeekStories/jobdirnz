@@ -2,7 +2,7 @@ const app = require("./app");
 const mongoose = require("mongoose");
 
 const mongoUri =
-  process.env.MONGO_URI || "mongodb://localhost:27017/newcareer";
+  process.env.MONGO_URI || "mongodb://localhost:27017/jobdir";
 
 mongoose.connect(mongoUri);
 

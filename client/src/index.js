@@ -1,10 +1,11 @@
-import "./index.css";
+import "./styles/index.css";
 
-import Auth0ProviderWithHistory from "./Components/Auth/Auth0ProviderWithHistory";
-import { BrowserRouter as Router } from "react-router-dom";
 import ReactDOM from "react-dom";
 import React from "react";
 import App from "./App";
+
+import Auth0ProviderWithHistory from "./Components/Auth/Auth0ProviderWithHistory";
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,0 +1,19 @@
+.listing {
+  @apply flex flex-col;
+  @apply border-2 bg-gray-300 rounded px-2;
+}
+
+.listing > .title {
+    @apply underline;
+}
+
+.listing > .description {
+}
+
+.listing > .closingDate {
+    @apply text-right font-thin;
+}
+
+.listingLink {
+  @apply text-blue-700 text-center;
+}

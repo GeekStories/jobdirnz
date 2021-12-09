@@ -1,0 +1,7 @@
+.home {
+    @apply text-center;
+}
+
+.searchInput {
+    @apply p-4 border-2 border-white shadow-lg rounded my-2 mx-auto w-5/6;
+}
