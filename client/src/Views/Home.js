@@ -8,15 +8,21 @@ const Home = () => {
   const [isLoading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
-  const GrabListings = async () => {
+  const GrabListings = () => {
     setLoading(true);
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/listing`);
-      const data = await response.json();
-      setListings(data);
-    } catch (err) {
-      console.log(err);
-    }
+    setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/listing`
+        );
+        if (response.status === 200) {
+          const data = await response.json();
+          setListings(data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }, 250);
     setLoading(false);
   };
 
@@ -27,18 +33,21 @@ const Home = () => {
           `${process.env.REACT_APP_API_URL}/listing/search/${search}`
         );
         const data = await response.json();
-        setListings(data);
+
+        if (response.status === 200) {
+          setListings(data);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
-    if (search.length > 3) SearchListings();    
+    if (search.length > 3) SearchListings();
   }, [search]);
 
   useEffect(() => {
-    GrabListings();
-  }, [])
+    if (search.length === 0) GrabListings();
+  }, [search.length]);
 
   return (
     <div className="home">
@@ -51,7 +60,8 @@ const Home = () => {
         />
       </div>
       <div className="center">
-        {listings.length === 0 && "Keep typing or try different keywords :)"}
+        {!listings && "Keep typing or try different keywords :)"}
+        {isLoading && <p>Loading job listings..</p>}
         {!isLoading && listings.length > 0 && <Listings listings={listings} />}
       </div>
     </div>

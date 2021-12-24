@@ -1,16 +1,17 @@
 import "./styles/App.css";
 
-import SingleListing from "./Components/SingleListing/singleListing";
 import RequireAuth from "./Components/Auth/RequireAuth";
+import SingleListing from "./Views/SingleListing";
 import { Routes, Route } from "react-router-dom";
+
+import ListingForm from "./Views/ListingForm";
 import Contact from "./Views/Contact";
 import Account from "./Views/Account";
-import PostJob from "./Views/PostJob";
-import SignUp from "./Views/SignUp";
 import Header from "./Views/Header";
+import Apply from "./Views/Apply";
 import About from "./Views/About";
-import Home from "./Views/Home";
 import Login from "./Views/Login";
+import Home from "./Views/Home";
 
 const App = () => {
   return (
@@ -22,7 +23,6 @@ const App = () => {
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/listing/:id" element={<SingleListing />} />
-          <Route path="/employer" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
 
           <Route
@@ -38,10 +38,28 @@ const App = () => {
             path="/create"
             element={
               <RequireAuth>
-                <PostJob />
+                <ListingForm />
               </RequireAuth>
             }
-          ></Route>
+          />
+
+          <Route
+            path="/apply/:id"
+            element={
+              <RequireAuth>
+                <Apply />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/edit/:id"
+            element={
+              <RequireAuth>
+                <ListingForm />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </div>
     </>

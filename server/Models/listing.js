@@ -9,10 +9,10 @@ const ListingSchema = new Schema({
   city: { type: String, required: true },
   listingDate: { type: Date, required: true },
   closingDate: { type: Date, required: true },
-  payRate: Number,
-  payType: String,
-  positionType: {type: String, required: true},
-  employmentLength: Number,
+  payRate: { type: String, default: "TBD" },
+  payType: { type: String, default: "TBD" },
+  positionType: { type: String, required: true },
+  employmentHours: Number,
   employerId: { type: String, required: true },
 });
 

@@ -7,11 +7,11 @@
 }
 
 .back {
-  @apply border-2 bg-gray-900 rounded px-4 py-2 text-white drop-shadow-lg w-1/3 mx-auto;
+  @apply border-2 bg-gray-900 rounded px-4 py-2 text-white w-1/3 mx-auto;
 }
 
 .apply {
-  @apply border-2 bg-gray-800 rounded px-4 py-2 text-white drop-shadow-lg w-1/2 mx-auto;
+  @apply border-2 bg-gray-800 rounded px-4 py-2 text-white w-1/2 mx-auto;
 }
 
 /*

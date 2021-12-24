@@ -1,0 +1,18 @@
+.formWrapper {
+  @apply shadow-lg p-3 grid grid-cols-1 gap-2 text-center w-5/6 mx-auto;
+}
+
+.closingDate,
+.inputGroup > input,
+select,
+textarea {
+  @apply border-2 border-gray-300 border-solid rounded;
+}
+
+.submitButton {
+  @apply border-2 border-white bg-gray-300 text-gray-800 font-medium rounded px-2 py-2 m-1;
+}
+
+.inputGroup {
+  @apply flex flex-col;
+}
