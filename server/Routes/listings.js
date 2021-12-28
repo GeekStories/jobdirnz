@@ -7,11 +7,19 @@ const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 
+const ApplicationsModel = require("../Models/applications");
+const ListingsModel = require("../Models/listing");
+
+const jwtAuthz = require("express-jwt-authz");
 const jwt = require("express-jwt");
 const jwks = require("jwks-rsa");
 
-const ApplicationsModel = require("../Models/applications");
-const ListingsModel = require("../Models/listing");
+const checkPermissions = jwtAuthz(
+  ["create:listing", "delete:listing", "update:listing"],
+  {
+    customScopeKey: "permissions",
+  }
+);
 
 const jwtCheck = jwt({
   secret: jwks.expressJwtSecret({
@@ -46,8 +54,17 @@ const newListingValidation = {
     positionType: Joi.string().required(),
     payRate: Joi.number(),
     payType: Joi.string(),
-    employmentHours: Joi.number().min(1),
+    employmentHours: Joi.number().min(0),
     id: Joi.objectId(),
+  }),
+};
+
+const validateApplication = {
+  [Segments.BODY]: Joi.object().keys({
+    cvId: Joi.string().required(),
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    contact: Joi.number().required(),
   }),
 };
 
@@ -73,6 +90,7 @@ router.get("/", async (req, res, next) => {
 router.post(
   "/",
   jwtCheck,
+  checkPermissions,
   celebrate(newListingValidation),
   async (req, res, next) => {
     const { body, user } = req;
@@ -98,6 +116,7 @@ router.post(
 router.post(
   "/update",
   jwtCheck,
+  checkPermissions,
   celebrate(newListingValidation),
   async (req, res, next) => {
     const { body, user } = req;
@@ -121,13 +140,14 @@ router.post(
 );
 
 // Delete single listing
-router.delete("/:id", jwtCheck, async (req, res) => {
+router.delete("/:id", jwtCheck, checkPermissions, async (req, res) => {
   const { id } = req.params;
   const { user } = req;
 
   const listing = await ListingsModel.findById(id);
   if (listing.employerId === user.sub) {
     await ListingsModel.findByIdAndDelete(id);
+    await ApplicationsModel.deleteMany({ listingId: id });
     return res.send({ msg: "deleted successfully" });
   }
 
@@ -175,30 +195,36 @@ router.get("/:id", celebrate(getListingValidationSchema), async (req, res) => {
 });
 
 // Create new application for a listing
-router.post("/apply/:id", jwtCheck, async (req, res, next) => {
-  const { user } = req;
-  const { id } = req.params;
-  const { cvId, name, email, contact } = req.body;
+router.post(
+  "/apply/:id",
+  jwtCheck,
+  celebrate(validateApplication),
+  async (req, res, next) => {
+    const { user } = req;
+    const { id } = req.params;
+    const { cvId, name, email, contact } = req.body;
 
-  const listing = await ListingsModel.findById(id);
+    const listing = await ListingsModel.findById(id);
 
-  const application = new ApplicationsModel({
-    title: listing.title,
-    userId: user.sub,
-    listingId: id,
-    cvId,
-    name,
-    email,
-    contact,
-  });
+    const application = new ApplicationsModel({
+      title: listing.title,
+      userId: user.sub,
+      listingId: id,
+      employerId: listing.employerId,
+      cvId,
+      name,
+      email,
+      contact,
+    });
 
-  try {
-    await application.save();
-    res.status(201).send({ msg: "Application Saved" });
-  } catch (error) {
-    next(error);
+    try {
+      await application.save();
+      res.status(201).send({ msg: "Application Saved" });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.use(errors());
 module.exports = router;

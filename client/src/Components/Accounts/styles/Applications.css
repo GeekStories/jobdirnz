@@ -1,0 +1,19 @@
+.applicationBox {
+  @apply even:bg-gray-200 odd:bg-gray-100;
+}
+
+.listingLinkBack {
+  @apply underline text-blue-500;
+}
+
+.applicationStatus {
+  @apply flex flex-row mx-auto;
+}
+
+.green {
+  @apply text-green-600 font-medium;
+}
+
+.red {
+  @apply text-red-600 font-medium;
+}

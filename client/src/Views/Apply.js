@@ -23,6 +23,8 @@ const Apply = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (firstname === "" || lastname === "" || email === "") return;
+
     const body = {
       cvId: cv.cvId,
       name: `${firstname} ${lastname}`,

@@ -50,49 +50,55 @@ const SingleListing = () => {
         {listingData !== [] ? (
           <>
             <div className="listingInfo">
-              <p className="title">{listingData.title} in {listingData.city}</p>
+              <p className="title">
+                {listingData.title} in {listingData.city}
+              </p>
               <p className="payInfo">
                 Rate:{" "}
                 {!isNaN(listingData.payRate) && listingData.payRate > 0
-                  ? `$${listingData.payRate.toLocaleString()} ${listingData.payType} | `
+                  ? `$${parseInt(listingData.payRate).toLocaleString()} ${
+                      listingData.payType
+                    } | `
                   : "TBD | "}
+                Hours: {" "}
                 {!isNaN(listingData.employmentHours) &&
                 listingData.employmentHours > 0
-                  ? `${listingData.employmentHours} hours p/w`
-                  : "hours p/w TBD"}
+                  ? listingData.employmentHours
+                  : "TBD"}
               </p>
+              Closing Date: {new Date(listingData.closingDate).toLocaleString()}
               <p className="description">{listingData.description}</p>
               <p className="closingDate">
                 Listing expires in {GetDifference(listingData.closingDate)} days
               </p>
-              Closing Date: {new Date(listingData.closingDate).toLocaleString()}
             </div>
           </>
         ) : (
           <p className="listingNotFound">Listing not found</p>
         )}
 
-        {listingData !== [] && (
-          <Link to={`/apply/${id}`} className="apply">
-            Apply
-          </Link>
-        )}
+        <div className="listingControls">
+          {listingData !== [] && (
+            <Link to={`/apply/${id}`} className="controlButton">
+              Apply
+            </Link>
+          )}
 
-        <button className="back" onClick={() => navigate(-1)}>
-          Back
-        </button>
+          <button className="controlButton" onClick={() => navigate(-1)}>
+            Back
+          </button>
 
-        {isAuthenticated && listingData.employerId === user.sub && (
-          <div className="adminControls">
-            <button className="deleteListing" onClick={handleDelete}>
+          {isAuthenticated && listingData.employerId === user.sub && (
+            <button className="controlButton" onClick={handleDelete}>
               Delete
             </button>
-            {" / "}
-            <Link to={`/edit/${id}`} className="editListing">
+          )}
+          {isAuthenticated && listingData.employerId === user.sub && (
+            <Link to={`/edit/${id}`} className="controlButton">
               Edit
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

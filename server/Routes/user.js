@@ -1,5 +1,6 @@
+const { celebrate, Joi, Segments, errors, next } = require("celebrate");
 const fileUpload = require("express-fileupload");
-const { errors, next } = require("celebrate");
+Joi.objectId = require("joi-objectid")(Joi);
 const { nanoid } = require("nanoid/async");
 const express = require("express");
 const router = express.Router();
@@ -25,6 +26,12 @@ const jwtCheck = jwt({
   algorithms: ["RS256"],
 });
 
+const cvDeleteValidation = {
+  [Segments.PARAMS]: Joi.object().keys({
+    id: Joi.objectId(),
+  }),
+};
+
 router.use(express.json());
 router.use(cors());
 
@@ -38,13 +45,21 @@ router.get("/", jwtCheck, async (req, res, next) => {
   try {
     const { user } = req;
 
-    const userData = {
-      data: await UsersModel.find({ userId: user.sub }),
-      listings: await ListingModel.find({ userId: user.sub }),
-      applications: await ApplicationsModel.find({ userId: user.sub }),
-    };
+    // User is an employer, return all applicants
+    if (user.permissions.includes("read:applications")) {
+      return res.send({
+        data: await UsersModel.find({ userId: user.sub }),
+        listings: await ListingModel.find({ employerId: user.sub }),
+        applications: await ApplicationsModel.find({ employerId: user.sub }),
+      });
+    }
 
-    res.send(userData);
+    // User is an employee, return all applictions
+    res.send({
+      data: await UsersModel.find({ userId: user.sub }),
+      listings: await ListingModel.find({ employerId: user.sub }),
+      applications: await ApplicationsModel.find({ userId: user.sub }),
+    });
   } catch (error) {
     next(error);
   }
@@ -56,31 +71,31 @@ router.post("/upload", jwtCheck, async (req, res, next) => {
 
     if (!req.files || Object.keys(req.files).length === 0) {
       const e = new Error("No files were uploaded.");
-      return next(e);
+      return res.status(400).send({ msg: "nofiles" });
     }
 
     const id = await nanoid();
-    const sampleFile = req.files.file;
+    const cv = req.files.file;
     const uploadPath = "uploads/" + id + ".pdf";
 
-    if (sampleFile.mimetype !== "application/pdf") {
+    if (cv.mimetype !== "application/pdf") {
       return res.status(400).send("Invalid filetype!");
     }
 
     // Check if the user has a cv uploaded already, if so overwrite it with the new one
-    const oldFile = await UsersModel.find({ userId: user.sub });
-    if (oldFile.length > 0) {
-      const path = "uploads/" + oldFile[0].cvId + ".pdf";
-      fs.unlinkSync(path);
+    const userData = await UsersModel.find({ userId: user.sub });
+    if (userData.length !== 0 && userData[0].cvId !== null) {
+      const oldPath = `./uploads/${userData[0].cvId}.pdf`;
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
     }
 
     // Use the mv() method to place the file somewhere on your server
-    sampleFile.mv(uploadPath, async (err) => {
+    cv.mv(uploadPath, async (err) => {
       if (err) next(err);
 
       await UsersModel.updateOne(
         { userId: user.sub },
-        { cvId: id, originalName: sampleFile.name },
+        { cvId: id, originalName: cv.name },
         { upsert: true }
       );
       return res.status(201).send("CV uploaded!");
@@ -89,6 +104,34 @@ router.post("/upload", jwtCheck, async (req, res, next) => {
     next(error);
   }
 });
+
+router.delete(
+  "/cv",
+  jwtCheck,
+  celebrate(cvDeleteValidation),
+  async (req, res, next) => {
+    try {
+      const { user } = req;
+
+      const userData = await UsersModel.find({ userId: user.sub });
+      const id = userData[0].cvId;
+
+      const path = `./uploads/${id}.pdf`;
+      if (fs.existsSync(path)) {
+        fs.unlinkSync(path);
+
+        await UsersModel.updateOne(
+          { userId: user.sub },
+          { cvId: null, originalName: null }
+        );
+      }
+
+      res.status(204).send("cvremoved");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.use(errors());
 module.exports = router;

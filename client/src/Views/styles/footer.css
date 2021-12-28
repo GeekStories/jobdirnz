@@ -1,0 +1,4 @@
+.footer {
+    @apply fixed bottom-0 left-0 w-full text-center;
+    @apply border-t-2 border-gray-600 bg-gray-400;
+}

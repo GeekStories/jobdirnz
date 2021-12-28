@@ -11,7 +11,7 @@ const Listing = ({ listing }) => {
       <div className="listing">
         <p className="title">{listing.title}</p>
         <p className="closingDate">
-        {`Applications close in ${difference} days`}
+          {`Applications close in ${difference} days`}
         </p>
         <p className="description">{listing.description.slice(0, 65)}...</p>
         <Link to={`/listing/${listing.id}`} className="listingLink">

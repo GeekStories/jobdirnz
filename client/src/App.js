@@ -8,6 +8,7 @@ import ListingForm from "./Views/ListingForm";
 import Contact from "./Views/Contact";
 import Account from "./Views/Account";
 import Header from "./Views/Header";
+import Footer from "./Views/Footer";
 import Apply from "./Views/Apply";
 import About from "./Views/About";
 import Login from "./Views/Login";
@@ -28,7 +29,7 @@ const App = () => {
           <Route
             path="/account"
             element={
-              <RequireAuth>
+              <RequireAuth employer={false}>
                 <Account />
               </RequireAuth>
             }
@@ -37,7 +38,7 @@ const App = () => {
           <Route
             path="/create"
             element={
-              <RequireAuth>
+              <RequireAuth employer={true}>
                 <ListingForm />
               </RequireAuth>
             }
@@ -46,7 +47,7 @@ const App = () => {
           <Route
             path="/apply/:id"
             element={
-              <RequireAuth>
+              <RequireAuth employer={false}>
                 <Apply />
               </RequireAuth>
             }
@@ -55,13 +56,14 @@ const App = () => {
           <Route
             path="/edit/:id"
             element={
-              <RequireAuth>
+              <RequireAuth employer={true}>
                 <ListingForm />
               </RequireAuth>
             }
           />
         </Routes>
       </div>
+      <Footer />
     </>
   );
 };

@@ -1,0 +1,8 @@
+.listings {
+    @apply grid grid-cols-1 gap-4 p-4 rounded-lg shadow-lg h-auto;
+}
+
+.listing {
+  @apply even:bg-gray-200 odd:bg-gray-100;
+}
+  
