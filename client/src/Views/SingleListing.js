@@ -6,11 +6,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 
 const SingleListing = () => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [listingData, setListingData] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user, isAuthenticated } = useAuth0();
 
   const handleDelete = async () => {
     const accessToken = await getAccessTokenSilently();
@@ -45,62 +44,69 @@ const SingleListing = () => {
   }, [id]);
 
   return (
-    <>
-      <div className="singleListing">
-        {listingData !== [] ? (
-          <>
-            <div className="listingInfo">
-              <p className="title">
-                {listingData.title} in {listingData.city}
-              </p>
-              <p className="payInfo">
-                Rate:{" "}
-                {!isNaN(listingData.payRate) && listingData.payRate > 0
-                  ? `$${parseInt(listingData.payRate).toLocaleString()} ${
-                      listingData.payType
-                    } | `
-                  : "TBD | "}
-                Hours: {" "}
-                {!isNaN(listingData.employmentHours) &&
-                listingData.employmentHours > 0
-                  ? listingData.employmentHours
-                  : "TBD"}
-              </p>
-              Closing Date: {new Date(listingData.closingDate).toLocaleString()}
-              <p className="description">{listingData.description}</p>
-              <p className="closingDate">
-                Listing expires in {GetDifference(listingData.closingDate)} days
-              </p>
-            </div>
-          </>
-        ) : (
-          <p className="listingNotFound">Listing not found</p>
+    <div className="singleListing">
+      {listingData !== [] ? (
+        <>
+          <div className="listingInfo">
+            <p className="listingTitle">
+              {listingData.title} in {listingData.city}
+            </p>
+            <ol className="listingHeader">
+              <li>
+                <p className="payInfo">
+                  Rate:{" "}
+                  {!isNaN(listingData.payRate) && listingData.payRate > 0
+                    ? `$${parseInt(listingData.payRate).toLocaleString()} ${
+                        listingData.payType
+                      } | `
+                    : "TBD | "}
+                  Hours:{" "}
+                  {!isNaN(listingData.employmentHours) &&
+                  listingData.employmentHours > 0
+                    ? `${listingData.employmentHours} p/w`
+                    : "TBD"}
+                </p>
+              </li>
+              <li>
+                {" "}
+                Closing Date:{" "}
+                {new Date(listingData.closingDate).toLocaleString()}
+              </li>
+            </ol>
+
+            <p className="listingDescription">{listingData.description}</p>
+            <p className="listingClosingDate">
+              Listing expires in {GetDifference(listingData.closingDate)} days
+            </p>
+          </div>
+        </>
+      ) : (
+        <p className="listingNotFound">Listing not found</p>
+      )}
+
+      <div className="listingControls">
+        {listingData !== [] && user["https://jobdir-access-control.com/roles"][0] !== "employer" && (
+          <Link to={`/apply/${id}`} className="controlButton">
+            Apply
+          </Link>
         )}
 
-        <div className="listingControls">
-          {listingData !== [] && (
-            <Link to={`/apply/${id}`} className="controlButton">
-              Apply
-            </Link>
-          )}
+        <button className="controlButton" onClick={() => navigate(-1)}>
+          Back
+        </button>
 
-          <button className="controlButton" onClick={() => navigate(-1)}>
-            Back
+        {isAuthenticated && listingData.employerId === user.sub && (
+          <button className="controlButton" onClick={handleDelete}>
+            Delete
           </button>
-
-          {isAuthenticated && listingData.employerId === user.sub && (
-            <button className="controlButton" onClick={handleDelete}>
-              Delete
-            </button>
-          )}
-          {isAuthenticated && listingData.employerId === user.sub && (
-            <Link to={`/edit/${id}`} className="controlButton">
-              Edit
-            </Link>
-          )}
-        </div>
+        )}
+        {isAuthenticated && listingData.employerId === user.sub && (
+          <Link to={`/edit/${id}`} className="controlButton">
+            Edit
+          </Link>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,23 @@
+.Tier {
+  @apply text-center;
+}
+
+.tierTitle {
+  @apply font-thin font-serif text-2xl;
+}
+
+thead {
+  @apply w-full;
+}
+
+thead > tr {
+    @apply border-b-2 border-black;
+}
+
+tbody > tr > td {
+  @apply border-2 border-gray-200 p-3;
+}
+tbody > tr {
+  @apply border-2 odd:bg-gray-800 odd:text-gray-400 even:bg-gray-400 even:text-gray-800 p-4;
+  @apply font-medium;
+}

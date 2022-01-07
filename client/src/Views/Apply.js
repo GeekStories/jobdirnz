@@ -83,51 +83,55 @@ const Apply = () => {
 
   return (
     !isLoading && (
-      <form onSubmit={handleSubmit} className="formWrapper">
-        <div className="inputGroup">
-          <label htmlFor="title">First Name</label>
-          <input
-            type="text"
-            defaultValue={firstname || ""}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="title">Last Name</label>
-          <input
-            type="text"
-            defaultValue={lastname || ""}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="title">Email</label>
-          <input
-            type="text"
-            defaultValue={email || ""}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="title">Contact (Mobile)</label>
-          <input
-            type="tel"
-            defaultValue={contact || ""}
-            onChange={(e) => setContact(e.target.value)}
-            required
-          />
-        </div>
-        <p className="selectedCvName">Selected CV: {cv.originalName}</p>
-        <Link to="/account" className="changeCVLink">
-          Change CV
-        </Link>
-        <button type="submit" className="sendApplicationButton">
-          Send Application
-        </button>
-      </form>
+      <div className="formWrapper">
+        <form onSubmit={handleSubmit}>
+          <div className="inputGroup">
+            <label htmlFor="title">First Name</label>
+            <input
+              type="text"
+              defaultValue={firstname || ""}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="title">Last Name</label>
+            <input
+              type="text"
+              defaultValue={lastname || ""}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="title">Email</label>
+            <input
+              type="text"
+              defaultValue={email || ""}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="inputGroup">
+            <label htmlFor="title">Contact (Mobile)</label>
+            <input
+              type="tel"
+              defaultValue={contact || ""}
+              onChange={(e) => setContact(e.target.value)}
+              required
+            />
+          </div>
+          <p className="selectedCvName">Selected CV: {cv.originalName}</p>
+
+          <Link to="/account" className="changeCVLink">
+            Change CV
+          </Link>
+          
+          <button type="submit" className="sendApplicationButton">
+            Send Application
+          </button>
+        </form>
+      </div>
     )
   );
 };

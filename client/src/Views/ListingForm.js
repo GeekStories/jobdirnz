@@ -111,10 +111,10 @@ const PostJob = () => {
   }, [id]);
 
   return (
-    <>
+    <div className="formWrapper">
       {isLoading && <p>Loading listing..</p>}
       {!isLoading && (
-        <form onSubmit={handleSubmit} className="formWrapper">
+        <form onSubmit={handleSubmit}>
           <div className="inputGroup">
             <label htmlFor="title">Position Title</label>
             <input
@@ -133,7 +133,7 @@ const PostJob = () => {
             <textarea
               name="description"
               id="description"
-              placeholder={description}
+              defaultValue={description}
               onChange={(e) => setDescription(e.target.value)}a
               maxLength={1000}
               required
@@ -212,7 +212,7 @@ const PostJob = () => {
           </button>
         </form>
       )}
-    </>
+    </div>
   );
 };
 

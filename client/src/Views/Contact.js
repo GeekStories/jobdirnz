@@ -1,13 +1,14 @@
 import "./styles/contact.css";
 
 import Select from "react-dropdown-select";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Contact = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [type, setType] = useState("general");
-  const [accountNumber, setAccountNumber] = useState(null);
+  const [reason, setReason] = useState("general");
+  const [accountNumber, setAccountNumber] = useState("");
   const [message, setMessage] = useState("");
 
   const contactTypes = [
@@ -23,15 +24,19 @@ const Contact = () => {
       const body = {
         email,
         accountNumber,
-        type,
+        reason,
         message,
       };
 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
         method: "POST",
-        body: body,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
       });
-      if (response.status === 200) Navigate("/");
+      if (response.status === 200) {
+        alert("Message sent!");
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +69,7 @@ const Contact = () => {
             options={contactTypes}
             searchable={false}
             separator
-            onChange={(e) => setType(e[0].label)}
+            onChange={(e) => setReason(e[0].label)}
             required
           />
         </div>

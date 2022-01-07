@@ -99,56 +99,46 @@ const Account = () => {
   }, [getAccessTokenSilently, user.sub]);
 
   return (
-    <>
+    <div className="accountWrapper">
       {isLoading && "Loading profile.."}
-      {!isLoading && (
-        <>
-          <div className="cv">
-            Current CV: {!cvName ? "Loading" : cvName}
-            <form
-              onSubmit={(e) => handleSubmit(e)}
-              encType="multipart/form-data"
-            >
-              <input
-                className="uploadField"
-                type="file"
-                name="cv"
-                id="cv"
-                accept="application/pdf"
-                onChange={(e) => setSelectedFile(e.target.files[0])}
-                required
-              />
-              <button type="submit" className="submitButton">
-                Upload New CV
-              </button>
+      <div className="cv">
+        Current CV: {!cvName ? "Loading" : cvName}
+        <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
+          <input
+            className="uploadField"
+            type="file"
+            name="cv"
+            id="cv"
+            accept="application/pdf"
+            onChange={(e) => setSelectedFile(e.target.files[0])}
+            required
+          />
+          <button type="submit" className="submitButton">
+            Upload New CV
+          </button>
 
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="submitButton"
-              >
-                Remove CV
-              </button>
-            </form>
-          </div>
-          <div className="userApplications">
-            <p>Your Applications</p>
-            {!isLoading && applications.length === 0 && (
-              <p className="noApps">No applications found</p>
-            )}
-            {!isLoading && <Applications applications={applications} />}
-          </div>
+          <button type="button" onClick={handleDelete} className="submitButton">
+            Remove CV
+          </button>
+        </form>
+      </div>
 
-          <div className="userListings">
-            <p>Your Listings</p>
-            {!isLoading && listings.length === 0 && (
-              <p className="noListings">No listings found</p>
-            )}
-            {!isLoading && <UserListings listings={listings} />}
-          </div>
-        </>
-      )}
-    </>
+      <div className="userApplications">
+        <p>Your Applications</p>
+        {!isLoading && applications.length === 0 && (
+          <p className="noApps">No applications found</p>
+        )}
+        {!isLoading && <Applications applications={applications} />}
+      </div>
+
+      <div className="userListings">
+        <p>Your Listings</p>
+        {!isLoading && listings.length === 0 && (
+          <p className="noListings">No listings found</p>
+        )}
+        {!isLoading && <UserListings listings={listings} />}
+      </div>
+    </div>
   );
 };
 

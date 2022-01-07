@@ -1,4 +1,0 @@
-.login,
-.logout {
-  @apply border-2 bg-gray-900 rounded px-4 py-2 m-1 text-white drop-shadow-lg;
-}

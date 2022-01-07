@@ -1,16 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router-dom";
 
-const RequireAuth = ({ children, employer }) => {
-  const { isAuthenticated, user } = useAuth0();
+const RequireAuth = ({ children, employerOnly }) => {
+  const { isAuthenticated, user, loginWithRedirect } = useAuth0();
 
-  if (!isAuthenticated) Navigate({ to: "/login" });
+  if (!isAuthenticated) loginWithRedirect();
 
-  if (employer) {
+  if (employerOnly) {
     if (user["https://jobdir-access-control.com/roles"][0] === "employer") {
       return children;
     }
-
     return Navigate({ to: "/hiring" });
   }
 

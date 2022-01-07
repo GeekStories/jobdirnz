@@ -3,15 +3,21 @@
 }
 
 .listingInfo {
-  @apply grid grid-flow-row mx-auto;
+  @apply grid grid-flow-row w-5/6 mx-auto mt-5;
 }
 
 .listingControls {
-  @apply grid grid-cols-2 w-5/6 mx-auto;
+  @apply grid grid-cols-1 w-5/6 mx-auto;
+  @apply md:grid-cols-2 md:w-3/6;
 }
 
 .controlButton {
   @apply border-2 bg-gray-900 rounded px-4 py-2 text-white;
+}
+
+.listingHeader {
+  @apply grid grid-cols-1;
+  @apply md:grid-cols-2;
 }
 
 /*
@@ -20,15 +26,15 @@
 *
 */
 
-.listingInfo > .title {
+.listingTitle {
   @apply text-gray-900 text-xl font-bold;
 }
 
-.listingInfo > .description {
-  @apply text-gray-600 font-thin max-h-96 max-w-5xl text-center px-2;
+.listingDescription {
+  @apply text-gray-600 font-thin max-h-96 text-justify m-1 px-2;
   @apply overflow-y-scroll scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100;
 }
 
-.listingInfo > .closingDate {
+.listingClosingDate {
   @apply text-gray-600 font-medium;
 }

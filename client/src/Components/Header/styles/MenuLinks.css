@@ -1,7 +1,0 @@
-.navLinks {
-    @apply flex flex-col;
-}
-
-.navLinks > a {
-    @apply focus:underline;
-}

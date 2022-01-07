@@ -1,5 +1,9 @@
 .contactWrapper {
-  @apply shadow-lg p-3 mt-4 rounded grid grid-cols-1 gap-2 text-center w-5/6 mx-auto bg-white;
+  @apply p-3 mt-4 rounded text-center max-w-md mx-auto h-full;
+}
+
+.contactWrapper > form {
+  @apply bg-white p-3;
 }
 
 .sendContactButton {

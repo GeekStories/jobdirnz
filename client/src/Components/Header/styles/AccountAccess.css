@@ -1,4 +1,0 @@
-.accountBtn {
-    @apply border-2 border-white bg-gray-300 text-gray-800 font-medium rounded px-2 py-2 m-1;
-    @apply hover:transition hover:duration-500 hover:ease-in-out hover:bg-gray-600 hover:text-gray-400;
-}

@@ -1,0 +1,11 @@
+.accountAccess {
+  @apply flex flex-col;
+  @apply md:flex-row;
+}
+
+.login,
+.logout,
+.accountBtn {
+  @apply bg-gray-900 rounded text-white drop-shadow-lg p-2 m-1;
+  @apply md:w-full;
+}

@@ -1,5 +1,7 @@
+import "./styles/about.css";
+
 const About = () => {
-    return ( <>Simple job search web app!</> );
-}
- 
+  return <div className="aboutWrapper">Simple job search web app!</div>;
+};
+
 export default About;
