@@ -1,19 +1,17 @@
 import "./styles/App.css";
 
 import { Routes, Route, useParams } from "react-router-dom";
-import RequireAuth from "./Components/Auth/RequireAuth";
-import SingleListing from "./Views/SingleListing";
+import RequireAuth from "../Auth/RequireAuth";
 
-import ListingForm from "./Views/ListingForm";
-import Contact from "./Views/Contact";
-import Account from "./Views/Account";
-import Header from "./Views/Header";
-import Hiring from "./Views/Hiring";
-import Footer from "./Views/Footer";
-import Apply from "./Views/Apply";
-import About from "./Views/About";
-import Login from "./Views/Login";
-import Home from "./Views/Home";
+import Listing from "./Listing";
+import Contact from "./Contact";
+import Account from "./Account";
+import Create from "./Create";
+import Footer from "./Footer";
+import Header from "./Header";
+import Apply from "./Apply";
+import About from "./About";
+import Home from "./Home";
 
 const App = () => {
   const { id } = useParams();
@@ -25,9 +23,7 @@ const App = () => {
           <Route path="/" element={<Home />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/listing/:id" element={<SingleListing />} />
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/hiring" element={<Hiring />}></Route>
+          <Route path="/listing/:id" element={<Listing />} />
 
           <Route
             path="/account"
@@ -42,7 +38,7 @@ const App = () => {
             path="/create"
             element={
               <RequireAuth employerOnly={true}>
-                <ListingForm />
+                <Create />
               </RequireAuth>
             }
           />
@@ -51,7 +47,7 @@ const App = () => {
             path="/edit/:id"
             element={
               <RequireAuth employerOnly={true}>
-                <ListingForm />
+                <Create />
               </RequireAuth>
             }
           />

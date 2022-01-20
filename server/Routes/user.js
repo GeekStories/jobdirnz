@@ -45,7 +45,7 @@ router.get("/", jwtCheck, async (req, res, next) => {
   try {
     const { user } = req;
 
-    // User is an employer, return all applicants
+    // Employer data
     if (user.permissions.includes("read:applications")) {
       return res.send({
         data: await UsersModel.find({ userId: user.sub }),
@@ -54,10 +54,10 @@ router.get("/", jwtCheck, async (req, res, next) => {
       });
     }
 
-    // User is an employee, return all applictions
+    // User data
     res.send({
       data: await UsersModel.find({ userId: user.sub }),
-      listings: await ListingModel.find({ employerId: user.sub }),
+      listings: [],
       applications: await ApplicationsModel.find({ userId: user.sub }),
     });
   } catch (error) {

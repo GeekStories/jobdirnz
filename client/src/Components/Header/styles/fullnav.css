@@ -1,0 +1,3 @@
+.navLink {
+  @apply w-full font-mono lg:h-8;
+}

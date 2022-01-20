@@ -1,0 +1,12 @@
+.employerListing {
+  @apply flex flex-col bg-gray-100;
+  @apply text-gray-600 rounded px-2 shadow-lg;
+}
+
+.employerListing > .title {
+  @apply underline;
+}
+
+.employerListing > .closingDate {
+  @apply text-center font-thin border-0;
+}

@@ -1,10 +1,5 @@
 footer {
-  @apply fixed bottom-0 left-0 right-0 w-full h-20;
-  @apply grid grid-cols-2 border-t-2;
-  @apply text-center border-gray-600 bg-gray-400;
-}
-
-.leftBlock,
-.rightBlock {
-  @apply flex flex-col;
+  @apply md:fixed md:bottom-0 md:left-0 md:right-0 w-full h-auto;
+  @apply w-full grid grid-cols-1 md:grid-cols-4;
+  @apply text-center border-gray-500 bg-gray-400 border-t-2 shadow-inner;
 }

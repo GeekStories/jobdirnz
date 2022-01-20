@@ -1,5 +1,6 @@
-.applicationBox {
-  @apply even:bg-gray-200 odd:bg-gray-100;
+.employerApplications,
+.userApplications {
+  @apply grid grid-cols-1 gap-3;
 }
 
 .listingLinkBack {

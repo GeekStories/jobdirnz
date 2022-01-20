@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-100;
+}
+
+.button {
+  @apply bg-gray-900 text-gray-300;
+  @apply rounded shadow-lg;
+  @apply transition ease-in-out delay-75;
+  @apply hover:bg-gray-800;
+}

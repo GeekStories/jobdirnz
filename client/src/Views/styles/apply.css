@@ -1,11 +1,11 @@
-.selectedCvName{
-    @apply text-sm;
+.selectedCvName {
+  @apply text-sm;
 }
 
 .changeCVLink {
-    @apply text-blue-800 underline;
+  @apply text-blue-800 underline;
 }
 
 .sendApplicationButton {
-    @apply border-2 bg-gray-900 rounded px-4 py-2 m-1 text-white drop-shadow-lg;
+  @apply border-2 bg-gray-900 rounded px-4 py-2 m-1 text-white drop-shadow-lg;
 }

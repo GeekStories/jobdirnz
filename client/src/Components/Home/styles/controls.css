@@ -1,0 +1,5 @@
+.homePageControls {
+    @apply grid grid-cols-1 gap-2 w-2/3 mx-auto;
+    @apply md:w-2/5;
+  
+  }

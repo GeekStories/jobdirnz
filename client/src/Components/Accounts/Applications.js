@@ -1,11 +1,13 @@
 import "./styles/Applications.css";
 
-import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import Select from "react-dropdown-select";
+import Application from "./Application";
+import { useState } from "react";
 
-const UserListings = ({ applications }) => {
+const UserListings = ({ applications, userListings, isEmployer }) => {
   const { getAccessTokenSilently, user } = useAuth0();
-  console.log(user);
+  const [filterId, setFilterId] = useState("");
 
   const handleWithdraw = async (id) => {
     try {
@@ -51,60 +53,56 @@ const UserListings = ({ applications }) => {
     }
   };
 
-  return applications.map((application) => (
-    <div key={application.id} className="applicationBox">
-      <p>
-        Position: {application.title} (
-        <Link
-          to={`/listing/${application.listingId}`}
-          className="listingLinkBack"
-        >
-          View
-        </Link>
-        )
-      </p>
+  return (
+    <>
+      {isEmployer && (
+        <div className="employerApplications">
+          <p>Filter Applications by Listing</p>
+          <div className="filterApplications">
+            <Select
+              options={userListings}
+              placeholder="Select a listing.."
+              onChange={(e) => setFilterId(e[0].id)}
+            />
+          </div>
 
-      <div className="applicationStatus">
-        Status:
-        <p className={application.status ? "green" : "red"}>
-          {application.status ? "Active" : "Not Active"}
-        </p>
-      </div>
+          {(filterId === "default" || filterId === "") && (
+            <p className="smallText">
+              Currently {applications.length} applications
+            </p>
+          )}
 
-      <div className="applicationDetails">
-        <p>Name: {application.name}</p>
-        <p>Email: {application.email}</p>
-        <p>contact: {application.contact}</p>
-      </div>
-
-      {user.sub === application.userId && application.status && (
-        <button
-          className="deleteApplication"
-          onClick={() => handleWithdraw(application.id)}
-        >
-          Withdraw application
-        </button>
+          {filterId !== "" &&
+            filterId !== "default" &&
+            applications
+              .filter((app) => app.listingId === filterId)
+              .map((application) => (
+                <Application
+                  application={application}
+                  handleWithdraw={handleWithdraw}
+                  handleDelete={handleDelete}
+                  userSub={user.sub}
+                />
+              ))}
+        </div>
       )}
 
-      {user.sub === application.userId && !application.status && (
-        <button
-          className="deleteApplication"
-          onClick={() => handleDelete(application.id)}
-        >
-          Delete application
-        </button>
-      )}
+      {!isEmployer && (
+        <div className="userApplications">
+          <p>Your Applications</p>
 
-      {user.sub === application.employerId && (
-        <button
-          className="deleteApplication"
-          onClick={() => handleWithdraw(application.id)}
-        >
-          Close application
-        </button>
+          {applications.map((application) => (
+            <Application
+              application={application}
+              handleWithdraw={handleWithdraw}
+              handleDelete={handleDelete}
+              userSub={user.sub}
+            />
+          ))}
+        </div>
       )}
-    </div>
-  ));
+    </>
+  );
 };
 
 export default UserListings;

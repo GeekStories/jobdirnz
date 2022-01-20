@@ -1,12 +1,16 @@
-.closingDate,
 .inputGroup > input,
 select,
 textarea {
-  @apply border-2 border-gray-300 border-solid rounded;
+  @apply border-2 border-gray-200 bg-gray-100 border-solid rounded shadow-inner;
+  @apply p-1 md:p-3;
+}
+
+.closingDate {
+  @apply p-3 border-2 border-gray-300;
 }
 
 .submitButton {
-  @apply border-2 border-white bg-gray-300 text-gray-800 font-medium rounded px-2 py-2 m-1;
+  @apply border-2 border-white bg-gray-400 text-gray-800 text-lg rounded px-2 py-2;
 }
 
 .inputGroup {

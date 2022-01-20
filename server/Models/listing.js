@@ -9,11 +9,12 @@ const ListingSchema = new Schema({
   city: { type: String, required: true },
   listingDate: { type: Date, required: true },
   closingDate: { type: Date, required: true },
-  payRate: { type: String, default: "TBD" },
-  payType: { type: String, default: "TBD" },
+  payRate: { type: String, default: "tbd" },
+  payType: { type: String, default: "tbd" },
   positionType: { type: String, required: true },
-  employmentHours: Number,
+  employmentHours: { type: String, default: "tbd" },
   employerId: { type: String, required: true },
+  editCount: { type: Number, default: 0 },
 });
 
 ListingSchema.set("toJSON", {

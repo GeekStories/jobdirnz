@@ -1,10 +1,10 @@
-import "./styles/index.css";
+import "./Views/styles/index.css";
 
 import ReactDOM from "react-dom";
 import React from "react";
-import App from "./App";
+import App from "./Views/App";
 
-import Auth0ProviderWithHistory from "./Components/Auth/Auth0ProviderWithHistory";
+import Auth0ProviderWithHistory from "./Auth/Auth0ProviderWithHistory";
 import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(

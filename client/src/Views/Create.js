@@ -1,13 +1,17 @@
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles/createForm.css";
 
+import Cities from "../Data/nz.json";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import Select from "react-dropdown-select";
 import DatePicker from "react-datepicker";
 
-import Cities from "../Data/nz.json";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+dayjs.extend(relativeTime);
 
 const payTypeOptions = [
   { id: "tbd", label: "T.B.D" },
@@ -20,7 +24,8 @@ const payTypeOptions = [
 
 const positionTypeOptions = [
   { id: "tbd", label: "T.B.D" },
-  { id: "fulltime", label: "Fulltime" },
+  { id: "fulltime", label: "Full-Time" },
+  { id: "parttime", label: "Part-Time" },
   { id: "permanent", label: "Permanent" },
   { id: "temporary", label: "Temporary" },
   { id: "contract", label: "Contract" },
@@ -29,20 +34,22 @@ const positionTypeOptions = [
 ];
 
 const PostJob = () => {
+  const [isLoading, setLoading] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
+  const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [isLoading, setLoading] = useState(false);
+  const [description, setDescription] = useState(
+    "Enter description here (max 2000 characters)"
+  );
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("Enter description here (max 1000 characters)");
-  const [city, setCity] = useState("");
-  const [closingDate, setClosingDate] = useState(new Date());
-  const [payRate, setPayRate] = useState(0);
-  const [payType, setPayType] = useState("Hourly");
+  const [closingDate, setClosingDate] = useState(dayjs().add(2, "d"));
   const [positionType, setPositionType] = useState("Full Time");
   const [employmentHours, setEmploymentHours] = useState(0);
+  const [payType, setPayType] = useState("Hourly");
+  const [payRate, setPayRate] = useState(0);
+  const [city, setCity] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,7 +72,7 @@ const PostJob = () => {
       : `${process.env.REACT_APP_API_URL}/listing`;
 
     const response = await fetch(url, {
-      method: "POST",
+      method: id ? `PATCH` : `POST`,
       mode: "cors",
       headers: {
         "content-type": "application/json",
@@ -93,7 +100,7 @@ const PostJob = () => {
         setTitle(data.title);
         setCity(data.city);
         setDescription(data.description);
-        setClosingDate(data.closingDate);
+        setClosingDate(dayjs(data.closingDate));
         setPayRate(data.payRate);
         setPayType(data.payType);
         setPositionType(data.positionType);
@@ -133,10 +140,11 @@ const PostJob = () => {
             <textarea
               name="description"
               id="description"
-              defaultValue={description}
-              onChange={(e) => setDescription(e.target.value)}a
-              maxLength={1000}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength={2000}
               required
+              rows={10}
             ></textarea>
           </div>
           <div className="inputGroup">
@@ -157,12 +165,15 @@ const PostJob = () => {
             <div className="closingDate">
               <DatePicker
                 dateFormat="Pp"
-                minDate={new Date()}
-                selected={new Date(closingDate)}
-                onChange={(e) => setClosingDate(e)}
+                minDate={dayjs().add(1, "d").toDate()}
+                selected={closingDate.toDate()}
+                onChange={(e) => setClosingDate(dayjs(e))}
+                closeOnScroll={true}
                 withPortal
                 required
               />
+
+              <p>Applications will close in {dayjs().to(closingDate, true)}</p>
             </div>
           </div>
           <div className="inputGroup">
@@ -207,9 +218,14 @@ const PostJob = () => {
           </div>
 
           <button type="submit" className="submitButton">
-            {id && "Update"}
-            {!id && "Create"} Listing
+            {id ? "Update" : "Create"} Listing
           </button>
+
+          {id && (
+            <button className="submitButton" onClick={() => navigate(-1)}>
+              Back
+            </button>
+          )}
         </form>
       )}
     </div>

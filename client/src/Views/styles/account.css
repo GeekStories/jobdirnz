@@ -1,7 +1,15 @@
 @tailwind utilities;
 
+.accountWrapper {
+  @apply p-3 text-center w-full lg:w-1/2 mx-auto;
+}
+
 .cv {
-  @apply text-center;
+  @apply text-center w-full;
+}
+
+.cvControls{
+  @apply w-full;
 }
 
 .uploadField::-webkit-file-upload-button,
@@ -11,28 +19,28 @@
 }
 
 .uploadField {
-  @apply cursor-pointer w-5/6;
+  @apply cursor-pointer;
   @apply bg-gray-50 border border-gray-300 text-gray-900;
   @apply focus:outline-none focus:border-transparent text-sm rounded-lg;
-}
-
-.userApplications,
-.userListings {
-  @apply grid grid-cols-1 text-center my-3;
 }
 
 .deleteApplication {
   @apply bg-gray-900 rounded px-3 py-2 text-white drop-shadow-lg w-2/3 mx-auto;
 }
 
-.applicationBox {
-  @apply grid grid-cols-1 text-sm bg-gray-300 w-5/6 mx-auto rounded shadow-lg py-3;
+.filterApplications {
+  @apply w-11/12 mx-auto bg-white border-2 border-gray-300 border-solid rounded;
 }
 
-.listingLinkBack{
+.applicationBox {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-3 text-sm bg-gray-300 w-full md:max-w-2xl mx-auto rounded-lg shadow-lg py-3;
+}
+
+.listingLinkBack {
   @apply text-sm underline;
 }
 
-.noApps, .noListings {
+.noApps,
+.noListings {
   @apply text-sm text-gray-400 font-medium;
 }

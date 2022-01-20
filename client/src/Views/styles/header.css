@@ -1,23 +1,9 @@
-@font-face {
-  font-family: "gomarice_solid_soldier";
-  src: local("Gomarice Solid Soldier"),
-    url(../../Assets/gomarice_solid_soldier.ttf) format("truetype");
-  font-display: swap;
-}
-
 .navLinks {
-  @apply grid grid-cols-5 px-1;
-}
-
-.navLink {
-  @apply text-lg text-gray-700 p-2;
+  @apply grid grid-cols-5 gap-10 p-2;
 }
 
 .header {
   @apply z-[99];
-  @apply h-14 text-center bg-gray-200 sticky top-0;
-}
-
-.headerTitle {
-  @apply text-2xl font-gss h-full py-3;
+  @apply h-12 text-center sticky top-0;
+  @apply md:shadow bg-gray-200;
 }

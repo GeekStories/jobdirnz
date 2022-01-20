@@ -8,26 +8,32 @@ const AccountAccess = () => {
 
   return (
     <div className="accountAccess">
-      {isLoading && <p>Loading account information..</p>}
-      {isAuthenticated && !isLoading && (
-        <Link className="accountBtn" to="/account">
-          Account
-        </Link>
-      )}
+      <div className="accountButtonWrapper">
+        {isAuthenticated && !isLoading && (
+          <button className="button account">
+            <Link to="/account">Account</Link>
+          </button>
+        )}
+      </div>
 
-      {isAuthenticated && !isLoading && (
-        <button
-          className="logout"
-          onClick={() => logout({ returnTo: window.location.origin })}
-        >
-          Log Out
-        </button>
-      )}
-      {!isAuthenticated && !isLoading && (
-        <button className="login" onClick={loginWithRedirect}>
-          Login
-        </button>
-      )}
+      <div className="logoutButtonWrapper">
+        {isAuthenticated && !isLoading && (
+          <button
+            className="button logout"
+            onClick={() => logout({ returnTo: window.location.origin })}
+          >
+            Log Out
+          </button>
+        )}
+
+        <div className="loginButtonWrapper">
+          {!isAuthenticated && !isLoading && (
+            <button className="button login" onClick={loginWithRedirect}>
+              Login
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

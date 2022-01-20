@@ -1,0 +1,21 @@
+.content {
+  @apply grid grid-cols-1;
+}
+
+.pageWrapper {
+  @apply text-center bg-gray-300;
+  @apply h-[100%];
+  @apply w-full md:w-4/5 mx-auto;
+}
+
+.formWrapper {
+  @apply p-3 rounded w-11/12 text-center max-w-lg mx-auto;
+}
+
+.formWrapper > form {
+  @apply grid grid-cols-1 gap-2 shadow-lg p-2 rounded bg-gray-100 w-full;
+}
+
+.smallText {
+  @apply text-sm text-gray-500 font-medium;
+}

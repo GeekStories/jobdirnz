@@ -41,7 +41,7 @@ const getListingValidationSchema = {
 
 const searchValidation = {
   [Segments.PARAMS]: Joi.object().keys({
-    value: Joi.string().alphanum().min(3),
+    value: Joi.string(),
   }),
 };
 
@@ -113,7 +113,7 @@ router.post(
 );
 
 // Update single listing
-router.post(
+router.patch(
   "/update",
   jwtCheck,
   checkPermissions,
@@ -122,16 +122,33 @@ router.post(
     const { body, user } = req;
 
     try {
-      let listing = { ...body };
+      let ModifiedListing = { ...body };
       listing.listingDate = new Date();
-      delete listing.id;
+
+      const CurrentSavedListing = await ListingsModel.findById(listing.id);
+
+      if (CurrentSavedListing.employerId !== user.sub) {
+        const error = new Error("Failed to update listing");
+        error.status = 401;
+        next(error);
+      } else if (CurrentSavedListing.editcount > 2) {
+        // Users are allowed 3 edits
+        const error = new Error(
+          "Failed to update listing, No edits left. Delete, then create a new listing."
+        );
+        error.status = 304;
+        next(error);
+      }
+
+      delete ModifiedListing.id;
+      ModifiedListing.editCount++;
 
       const query = {
         _id: body.id,
         employerId: user.sub,
       };
 
-      await ListingsModel.updateOne(query, listing, { upsert: false });
+      await ListingsModel.updateOne(query, ModifiedListing, { upsert: false });
       return res.status(204).send({ msg: "Listing Updated" });
     } catch (error) {
       next(error);
@@ -146,8 +163,8 @@ router.delete("/:id", jwtCheck, checkPermissions, async (req, res) => {
 
   const listing = await ListingsModel.findById(id);
   if (listing.employerId === user.sub) {
+    await ApplicationsModel.updateMany({ listingId: id }, { status: false });
     await ListingsModel.findByIdAndDelete(id);
-    await ApplicationsModel.deleteMany({ listingId: id });
     return res.send({ msg: "deleted successfully" });
   }
 
@@ -161,13 +178,16 @@ router.get(
   async (req, res, next) => {
     try {
       const { value } = req.params;
-      const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
-      const searchRgx = rgx(value);
+      const regEx = new RegExp(value, "i");
 
       res.send(
-        await ListingsModel.find({
-          title: { $regex: searchRgx, $options: "i" },
-        }).limit(80)
+        await ListingsModel.find(
+          {
+            $or: [{ title: regEx }, { city: regEx }],
+          },
+          {},
+          { limit: 80 }
+        )
       );
     } catch (err) {
       next(err);
