@@ -32,8 +32,6 @@ services:
     image: mongo
     expose:
     - "27017"
-    build:
-      context: ./db
     volumes:
       - mongodb_data_container:/data/db
     ports:
