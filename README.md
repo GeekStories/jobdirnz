@@ -31,7 +31,7 @@ Open `http://localhost:3000` and enjoy!
 
 ## Contributors
 
-- Creator of API-Gen @geekstories
+- Creator of JobDir @geekstories
 
 ## Tools Used
   - Core:
